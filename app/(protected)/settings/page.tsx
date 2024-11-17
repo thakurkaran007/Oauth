@@ -8,7 +8,8 @@ const settings = async () => {
             <h1>{JSON.stringify(session)}</h1>
             <form action={async() => {
                 "use server"
-                await signOut({ redirect: false });
+                await signOut();
+                Response.redirect("/auth/login");
             }}>
                 <Button type="submit">Logout</Button>
             </form>

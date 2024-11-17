@@ -8,9 +8,6 @@ interface LoginProps {
 
 export const LoginButton = ({children, mode = "redirect"}: LoginProps)  => {
 
-    const click = () => {
-        console.log("Login Button onclicked");
-    }
 
     if (mode == "modal") {
         return (
@@ -21,7 +18,7 @@ export const LoginButton = ({children, mode = "redirect"}: LoginProps)  => {
     }
 
     return (
-        <span onClick={click} className="cursor-pointer">
+        <span className="cursor-pointer">
             {children}
         </span>
     )

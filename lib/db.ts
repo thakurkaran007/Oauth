@@ -1,3 +1,4 @@
+import { buttonVariants } from "@/components/ui/Button";
 import { PrismaClient } from "@prisma/client";
 
 declare global {
