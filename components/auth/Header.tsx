@@ -20,7 +20,10 @@ export const Header = ({label}: HeaderProps) => {
             )}>
                 🔐 Auth
             </h1>
-            <p className='text-muted-foreground text-sm'>
+            <p className={cn(
+                "text-muted-foreground text-sm",
+                font.className
+            )}>
                 {label} 
             </p>
         </div>
