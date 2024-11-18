@@ -11,12 +11,21 @@ export const {
     signIn,
     signOut,
 } = NextAuth({
+    pages: {
+        error: '/auth/error',
+        signIn: '/auth/login',
+    },
+    events: {
+        async linkAccount({ user }) {
+            await db.user.update({
+                where: { id: user.id },
+                data: {
+                    emailVerified: new Date()
+                }
+            })
+        }
+    },
     callbacks: {
-        async signIn({ user }: any) {
-            const existingUser = await getUserById(user.id);
-            if (!existingUser || !existingUser.emailVerified) return false;
-            return true;
-        },
         async session({token, session}) {
             if (token.sub && session.user) session.user.id = token.sub;
             if (token.role && session.user) session.user.role = token.role as UserRole;

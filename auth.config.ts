@@ -19,6 +19,7 @@ export default {
         }),
         Credentials({
             async authorize(credentials): Promise<any> {
+                console.log("Credentials Triggered");
                 const validateFields = LoginSchema.safeParse(credentials);
                 if (validateFields.success) {
                     const { email, password } = validateFields.data;

@@ -4,12 +4,11 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { Button } from '../ui/Button';
 import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 
 export const Social = () => {
     const on = (provider: "google" | "github") => {
         signIn(provider, {
-            callbackUrl: DEFAULT_LOGIN_REDIRECT,
+            callbackUrl: "/settings",
         });
     };
 

@@ -8,6 +8,7 @@ import { getUserByEmail } from "@/data/user";
 
 
 const Signup = async (values: z.infer<typeof SignupSchema>) => {
+    console.log("Signup Triggered Bro: ", values);
     const validation = SignupSchema.safeParse(values);
 
     if (!validation.success) {
