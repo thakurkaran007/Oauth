@@ -6,7 +6,7 @@ const settings = async () => {
     return (
         <div>
             <h1>{JSON.stringify(session)}</h1>
-            <form action={async() => {
+            <form action={ async () => {
                 "use server"
                 await signOut();
                 Response.redirect("/auth/login");

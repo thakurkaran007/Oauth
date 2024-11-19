@@ -12,7 +12,8 @@
     import Login from "@/actions/login"
     import { useState, useTransition } from "react"
     import { FormSuccess } from "../Form-success"
-import { useSearchParams } from "next/navigation";
+    import { useSearchParams } from "next/navigation";
+    import Link from "next/link";
 
     export const LoginForm = () => {
         const searchParams = useSearchParams();
@@ -74,13 +75,21 @@ import { useSearchParams } from "next/navigation";
                                 <FormControl>
                                     <Input {...field} type="password" placeholder='******' disabled={isPending}/>
                                 </FormControl>
+                                <Button 
+                                    variant='link'
+                                    size='sm'
+                                    asChild
+                                    className="px-0 font-normal"
+                                >
+                                    <Link href="/auth/reset">Forgot password?</Link>
+                                </Button>
                                 <FormMessage />
                                 </FormItem>
                             )}
                             />
                         </div>
-                        <FormSuccess message={success}/>
-                        <FormError message={error || urlError}/>
+                        {success && <FormSuccess message={success}/>}
+                        {error && <FormError message={error}/>}
                         <Button type="submit" className="w-full">Login</Button>
                     </form>
                 </Form>

@@ -1,4 +1,3 @@
-import { BackButton } from "@/components/auth/Backbutton"
 import { CardWrapper } from "@/components/auth/cardWrapper"
 
 const ErrorPage = () => {
