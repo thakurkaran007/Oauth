@@ -5,10 +5,10 @@ import { SignupSchema } from "@/schemas";
 import bycrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/token";
 
 
 const Signup = async (values: z.infer<typeof SignupSchema>) => {
-    console.log("Signup Triggered Bro: ", values);
     const validation = SignupSchema.safeParse(values);
 
     if (!validation.success) {
@@ -31,7 +31,10 @@ const Signup = async (values: z.infer<typeof SignupSchema>) => {
             name
         }
     });
-    return { success: "User created" };
+
+    const verificationToken = await generateVerificationToken(email);
+
+    return { success: "Confirmation Email Sent!!" };
 }
 
 export default Signup;

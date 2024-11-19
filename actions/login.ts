@@ -5,6 +5,8 @@ import * as z from "zod"
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import { db } from "@/lib/db";
+import { generateVerificationToken } from "@/lib/token";
 
 
 const Login = async (values: z.infer<typeof LoginSchema>) => {
@@ -16,6 +18,20 @@ const Login = async (values: z.infer<typeof LoginSchema>) => {
     } 
     
     const { email, password } = validation.data;
+
+    const existingUser = await db.user.findFirst({
+        where: {
+            email,
+        }
+    })
+    if (!existingUser) return { error: "Email doesn't exist" };
+
+    if (!existingUser.emailVerified) {
+        const verificationToken = await generateVerificationToken(email);
+
+
+        return { success: "Confirmation mail sent" }
+    }
 
     try {
         await signIn("credentials", {
