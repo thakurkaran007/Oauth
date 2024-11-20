@@ -16,8 +16,8 @@
     import Link from "next/link";
 
     export const LoginForm = () => {
-        const searchParams = useSearchParams();
-        const urlError = searchParams.get("error") === "OAuthAccountNotLinked" ? "Email is already in use" : '';
+
+        const urlError = useSearchParams().get("error") === "OAuthAccountNotLinked" ? "Email is already in use" : '';
         const [error, setError] = useState<string | undefined>();
         const [success, setSuccess] = useState<string | undefined>();
         const [isPending, startTransition] = useTransition();
@@ -89,7 +89,7 @@
                             />
                         </div>
                         {success && <FormSuccess message={success}/>}
-                        {error && <FormError message={error}/>}
+                        {error && <FormError message={error || urlError}/>}
                         <Button type="submit" className="w-full">Login</Button>
                     </form>
                 </Form>
