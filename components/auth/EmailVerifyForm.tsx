@@ -22,8 +22,11 @@ export const EmailVerifyForm = () => {
         }
         newVerification(token)
             .then((data) => {
-                setSuccess(data.success);
-                setError(data.error);
+                if ("error" in data) {
+                    setError(data.error);
+                } else {
+                    setSuccess(data.success);
+                }
             })
             .catch((error) => {
                 setError(error.message);
@@ -32,7 +35,7 @@ export const EmailVerifyForm = () => {
 
     useEffect(() => {
         Submit();
-    }, [])
+    }, [success])
 
     return (
         <CardWrapper 

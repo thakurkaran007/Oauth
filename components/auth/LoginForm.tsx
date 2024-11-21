@@ -16,7 +16,7 @@
     import Link from "next/link";
 
     export const LoginForm = () => {
-
+        const [showCode, setShowCode] = useState(false);
         const urlError = useSearchParams().get("error") === "OAuthAccountNotLinked" ? "Email is already in use" : '';
         const [error, setError] = useState<string | undefined>();
         const [success, setSuccess] = useState<string | undefined>();
@@ -26,21 +26,27 @@
             resolver: zodResolver(LoginSchema),
             defaultValues: {
                 email: '',
-                password: ''
+                password: '',
+                code: ''
             }
         });
 
         const onSubmit = (values: z.infer<typeof LoginSchema>) => {
             startTransition(() => {
 
-                Login(values).then((res) => {
-                    if ("error" in res) {
-                        setError(res.error);
-                    } else {
-                        setSuccess(res.success);
+                Login(values).then((data) => {
+                    if (data.error) {
+                        form.reset();
+                        setError(data.error);
+                    }
+                    if (data.success) {
+                        form.reset();
+                        setSuccess(data.success);
+                    }
+                    if (data.twoFactor) {
+                        setShowCode(true);
                     }
                 })
-                
             })
         }
 
@@ -53,7 +59,25 @@
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <div className="space-y-4">
-                        <FormField
+                        {
+                            showCode && 
+                            <FormField
+                                control={form.control}
+                                name="code"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormLabel>Code</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="text" placeholder='Enter Code' disabled={isPending}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                                />
+                        }
+                        { !showCode &&
+                        <>
+                                <FormField
                             control={form.control}
                             name="email"
                             render={({ field }) => (
@@ -87,10 +111,12 @@
                                 </FormItem>
                             )}
                             />
+                        </>
+                        }
                         </div>
                         {success && <FormSuccess message={success}/>}
                         {error && <FormError message={error || urlError}/>}
-                        <Button type="submit" className="w-full">Login</Button>
+                        <Button type="submit" className="w-full">{showCode ? "Verify" : "Login"}</Button>
                     </form>
                 </Form>
             </CardWrapper>

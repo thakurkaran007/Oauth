@@ -10,7 +10,7 @@ export const newVerification = async (token: string) => {
 
     const hasExpired = new Date() > new Date(existingToken.expires);
 
-    if (hasExpired) return { error: "Token has expired" };
+    if (hasExpired) return { error: "Session expired" };
 
     const existingUser = await getUserByEmail(existingToken.email);
 

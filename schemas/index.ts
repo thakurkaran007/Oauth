@@ -19,6 +19,7 @@ export const LoginSchema = z.object({
     password: z.string().min(1, {
         message: 'Password is required'
     }),
+    code: z.string().optional()
 });
 
 export const SignupSchema = z.object({
@@ -30,5 +31,6 @@ export const SignupSchema = z.object({
     }),
     name: z.string().min(1, {
         message: 'Name is required'
-    })
+    }),
+    code: z.string().optional()
 });

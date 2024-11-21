@@ -9,6 +9,7 @@ export default auth((req): any => {
     const isLoggedIn = !!req.auth;
     const { nextUrl } = req;
     console.log('middleware.ts: req', req.nextUrl.pathname);
+    const isHomePage = nextUrl.pathname.startsWith("/settings");
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -23,6 +24,9 @@ export default auth((req): any => {
     }
     if (!isLoggedIn && isPublicRoute) {
       return NextResponse.next();
+    }
+    if (!isLoggedIn &&  isHomePage) {
+      return Response.redirect(new URL("/auth/login", nextUrl));
     }
 })
 

@@ -3,7 +3,7 @@
 import { ResetSchema } from "@/schemas"
 import { getUserByEmail } from "@/data/user"
 import { z } from "zod"
-import { generatePasswordResetToken } from "@/lib/token"
+import { generatePasswordResetToken } from "@/lib/tokens"
 import { sendResetPasswordMail } from "@/lib/mail"
 
 export const reset = async (values: z.infer<typeof ResetSchema>) => {

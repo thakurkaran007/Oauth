@@ -1,20 +1,20 @@
-import { auth, signOut } from '@/auth'
-import { Button } from '@/components/ui/Button';
+"use client";
 
-const settings = async () => {
-    const session = await auth();
+import { logout } from '@/actions/logout';
+import { Button } from '@/components/ui/Button';    
+import { useCurrentUser } from '@/hooks/use-curent-user';
+
+const Settings = () => {
+    const session = useCurrentUser();
+
+    const handleLogout = () => {
+        logout();
+    }
     return (
         <div>
-            <h1>{JSON.stringify(session)}</h1>
-            <form action={ async () => {
-                "use server"
-                await signOut();
-                Response.redirect("/auth/login");
-            }}>
-                <Button type="submit">Logout</Button>
-            </form>
+            <Button type="submit" onClick={handleLogout}>Logout</Button>
         </div>
     );
 }
 
-export default settings;
+export default Settings;
