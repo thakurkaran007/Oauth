@@ -1,3 +1,4 @@
+import { UserRole } from '@prisma/client';
 import * as z from 'zod';
 
 export const ResetSchema = z.object({
@@ -5,6 +6,35 @@ export const ResetSchema = z.object({
         message: 'Invalid email address'
     }),
 });
+
+export const SettingSchema = z.object({
+    name: z.string().optional(),
+    password: z.string().min(6).optional(),
+    newPassword: z.string().min(6).optional(),
+    role: z.enum([UserRole.ADMIN, UserRole.USER]),
+    email: z.string().email({ message: 'Invalid email address' }).optional()
+})
+    .refine(data => {
+        if (data.password && !data.newPassword) {
+            return false;
+        }
+        return true;
+    }, {
+        message: 'New password is required',
+        path: ['newPassword']
+    }
+    )
+    .refine(data => {
+        if (!data.password && data.newPassword) {
+            return false;
+        }
+        return true;
+    },
+        {
+            message: 'Current password is required',
+            path: ['password']
+        }
+)
 
 export const NewPasswordSchema = z.object({
     password: z.string().min(6, {

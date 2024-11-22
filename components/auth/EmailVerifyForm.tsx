@@ -35,7 +35,7 @@ export const EmailVerifyForm = () => {
 
     useEffect(() => {
         Submit();
-    }, [success])
+    }, [success, Submit])
 
     return (
         <CardWrapper 
